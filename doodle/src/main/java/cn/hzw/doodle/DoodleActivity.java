@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,7 +165,26 @@ public class DoodleActivity extends Activity {
         if (mDoodleParams.mIsFullScreen) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-        Bitmap bitmap = ImageUtils.createBitmapFromPath(mImagePath, this);
+        Bitmap bitmap1 = ImageUtils.createBitmapFromPath(mImagePath, this);
+
+        DisplayMetrics dm=getResources().getDisplayMetrics();
+        int mScreenWidth=dm.widthPixels;
+        int mScreenHeight=dm.heightPixels;
+
+        int originWidth = bitmap1.getWidth();
+        int originHeight = bitmap1.getHeight();
+
+        int destWidth;
+        int destHeight;
+        if(mScreenWidth/originWidth>mScreenHeight/originHeight){
+            destWidth = mScreenHeight/originHeight * originWidth;
+            destHeight= mScreenHeight;
+        }else {
+            destWidth = mScreenWidth;
+            destHeight= mScreenWidth/originWidth * originHeight;
+        }
+
+        Bitmap bitmap = Bitmap.createScaledBitmap(bitmap1,destWidth,destHeight,true);
         if (bitmap == null) {
             LogUtil.e("TAG", "bitmap is null!");
             this.finish();
