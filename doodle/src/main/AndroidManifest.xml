@@ -8,6 +8,7 @@
     <application
             >
         <activity android:name=".DoodleActivity"
+            android:screenOrientation="landscape"
             android:configChanges="screenSize|orientation|keyboardHidden|navigation|keyboard"
             />
     </application>
